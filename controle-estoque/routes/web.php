@@ -20,4 +20,4 @@ Route::apiResources([
     'estoque' => EstoqueController::class
 ]);
 
-Route::post('saveProduto', [\App\Http\Controllers\EstoqueController::class, 'saveProduto'])->name('saveProduto');
+Route::post('saveProduct', [\App\Http\Controllers\EstoqueController::class, 'saveProduct'])->name('saveProduct');
