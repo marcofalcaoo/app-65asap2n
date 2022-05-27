@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\EstoqueController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::apiResources([
+    'estoque' => EstoqueController::class
+]);
+
+Route::post('saveProduto', [\App\Http\Controllers\EstoqueController::class, 'saveProduto'])->name('saveProduto');
