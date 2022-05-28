@@ -20,5 +20,6 @@ Route::apiResources([
     'estoque' => EstoqueController::class
 ]);
 
+Route::get('getAllProducts', [\App\Http\Controllers\EstoqueController::class, 'getAllProducts'])->name('getAllProducts');
 Route::post('saveProduct', [\App\Http\Controllers\EstoqueController::class, 'saveProduct'])->name('saveProduct');
 Route::post('updateProduct', [\App\Http\Controllers\EstoqueController::class, 'updateProduct'])->name('updateProduct');

@@ -16,8 +16,7 @@ class EstoqueController extends Controller
 
     public function index()
     {
-        $estoque = new Estoque;
-        return $estoque->getAllEstoque();
+        //
     }
 
     /**
@@ -26,6 +25,14 @@ class EstoqueController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function getAllProducts(){
+       
+        $estoque = new Estoque;
+        return $estoque->getAllEstoque();
+
+    }
+
     public function saveProduct(Request $request)
     {
         
