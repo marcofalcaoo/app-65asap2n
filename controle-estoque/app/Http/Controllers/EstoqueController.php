@@ -53,6 +53,34 @@ class EstoqueController extends Controller
        return $insert;
     }
 
+    public function updateProduct(Request $request)
+    {
+        
+        $estoque = new Estoque;
+
+        $validator = Validator::make($request->all(), [
+            
+            'sku_produto' => 'required|max:10',
+            'qtd_produto' => 'required'   
+            
+        ]);
+ 
+        if ($validator->fails()) {
+            $messages = $validator->messages();
+            $error = array();
+            foreach ($messages->all(':message') as $message)
+            {
+                array_push($error,$message);
+            }
+            return $error;
+        }
+
+       $dados = $request->all();
+       $insert = $estoque->updateProduct($dados);
+
+       return $insert;
+    }
+
     /**
      * Display the specified resource.
      *

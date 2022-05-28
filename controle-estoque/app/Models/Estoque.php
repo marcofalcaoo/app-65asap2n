@@ -23,17 +23,72 @@ class Estoque extends Model
         $sku = !empty($dados['sku_produto']) ? ($dados['sku_produto']) : '';
         $qtd = !empty($dados['qtd_produto']) ? ($dados['qtd_produto']) : '';
 
-        $estoque = DB::table('tb_produtos')->where('sku_produto', $sku)->first();
+        $estoque = $this->getProductBySku($sku);
        
         if(!$estoque){
 
-            DB::insert('insert into tb_produtos (nm_produto, dsc_produto, sku_produto, qtd_produto) values (?, ?, ?, ?)', [$nome, $desc, $sku,  $qtd] );
+            DB::insert('insert into tb_produtos (nm_produto, dsc_produto, sku_produto, qtd_produto, created_at) values (?, ?, ?, ?, ?)', [$nome, $desc, $sku,  $qtd, date("Y-m-d H:i:s")] );
             
-            return "Sucesso produto registrado";
+            return "Produto registrado";
 
         }else{
 
             return "SKU já registrado";
+
+        } 
+        
+    }
+    
+    public function getProductBySku($sku){
+
+        $product = DB::table('tb_produtos')->where('sku_produto', $sku)->first();
+
+        return $product;
+
+    }
+
+    public function insertMovProduct($idProduct, $data, $qtdInicial, $qtdFinal, $tipoOperacao){
+
+        $product = DB::insert('insert into tb_mov_produtos (id_produto, dt_alteracao, qtd_inicial_produto, qtd_final_produto, tipo_operacao) values (?, ?, ?, ?, ?)', [$idProduct, $data, $qtdInicial, $qtdFinal, $tipoOperacao]);
+
+        return $product;
+
+    }
+
+    public function updateQtProduct($qtd, $idProduct){
+
+        $product = DB::update("update tb_produtos set qtd_produto = ?, updated_at = ? where id_produto = ?",[$qtd, date("Y-m-d H:i:s"), $idProduct]);
+
+        return $product;
+
+    }
+
+    public function updateProduct($dados)
+    {
+        
+        $sku = !empty($dados['sku_produto']) ? ($dados['sku_produto']) : '';
+        $qtd = !empty($dados['qtd_produto']) ? ($dados['qtd_produto']) : '';
+
+        $estoque = $this->getProductBySku($sku);
+        
+        if($estoque){
+
+            if($estoque->qtd_produto == $qtd){
+
+                return "Quantidade inserida igual a atual.";
+
+            }
+
+           ($estoque->qtd_produto > $qtd ) ? $tipoOperacao = 'remove' : $tipoOperacao = 'add';
+
+           $this->insertMovProduct($estoque->id_produto, date("Y-m-d H:i:s"), $estoque->qtd_produto, $qtd, $tipoOperacao);
+           $this->updateQtProduct($qtd, $estoque->id_produto);
+
+           return "Produto atualizado.";
+
+        }else{
+
+            return "SKU não encontrado.";
 
         } 
         
