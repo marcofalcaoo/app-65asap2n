@@ -38,6 +38,24 @@ class Estoque extends Model
         } 
         
     }
+    public function getProductMov($dados)
+    {
+
+        $product = DB::table('tb_mov_produtos');
+        if($dados['sku_produto']){
+            $product = $product->where('tb_produtos.sku_produto', $dados['sku_produto']);
+        }
+        if($dados['tipo_operacao']){
+            $product = $product->where('tb_mov_produtos.tipo_operacao', $dados['tipo_operacao']);
+        }
+        
+        $product = $product->join('tb_produtos', 'tb_produtos.id_produto', '=', 'tb_mov_produtos.id_produto')->get();
+       
+        empty($product) ? $return = 'Dados não encontrados'  : $return = $product ;
+        
+        return $return;
+        
+    }
     
     public function getProductBySku($sku){
 

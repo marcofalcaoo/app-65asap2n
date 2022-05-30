@@ -60,6 +60,31 @@ class EstoqueController extends Controller
        return $insert;
     }
 
+    public function getProductMov(Request $request)
+    {
+        
+        $estoque = new Estoque;
+
+        $validator = Validator::make($request->all(), [
+            'tipo_operacao' => 'required_without_all:sku_produto',
+            'sku_produto' => 'required_without_all:tipo_operacao|max:10'
+        ]);
+        if ($validator->fails()) {
+            $messages = $validator->messages();
+            $error = array();
+            foreach ($messages->all(':message') as $message)
+            {
+                array_push($error,$message);
+            }
+            return $error;
+        }
+
+       $dados = $request->all();
+       $return = $estoque->getProductMov($dados);
+
+       return $return;
+    }
+
     public function updateProduct(Request $request)
     {
         

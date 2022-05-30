@@ -23,3 +23,4 @@ Route::apiResources([
 Route::get('getAllProducts', [\App\Http\Controllers\EstoqueController::class, 'getAllProducts'])->name('getAllProducts');
 Route::post('saveProduct', [\App\Http\Controllers\EstoqueController::class, 'saveProduct'])->name('saveProduct');
 Route::post('updateProduct', [\App\Http\Controllers\EstoqueController::class, 'updateProduct'])->name('updateProduct');
+Route::post('getProductMov', [\App\Http\Controllers\EstoqueController::class, 'getProductMov'])->name('getProductMov');
